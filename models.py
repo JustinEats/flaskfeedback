@@ -13,6 +13,13 @@ class User(db.Model):
     first_name = db.Column(db.Text(length=30), nullable=False)
     last_name = db.Column(db.Text(length=30), nullable=False)
 
+    @classmethod
+    def register(cls, username, password,email,firstname,lastname):
+        '''Register a user by hashing their password'''
+        hashed = bcrypt.generate_password_hash(password)
+        hashed_utf8 = hashed.decode("utf8")
+        return cls(username=username, password=hashed_utf8, email=email, firstname=firstname,lastname=lastname)
+
 def connect_db(app):
     db.app = app
     db.init_app(app)

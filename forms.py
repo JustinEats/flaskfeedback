@@ -2,8 +2,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import InputRequired, Optional
 
-class Register(FlaskForm):
-    '''Register a user'''
+class RegisterUser(FlaskForm):
+    '''Register a user form'''
     username = StringField("Username:", validators=[InputRequired()])
     password = StringField("Password:", validators=[InputRequired()])
     email = StringField("E-mail", validators=[InputRequired()])
