@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, flash, session
 from models import db, connect_db, User
 from secrets import KEY
 from forms import RegisterUser, LoginUser
@@ -23,11 +23,13 @@ def register():
         username = form.username.data
         password = form.password.data
         email = form.email.data
-        first_name = form.first_ncame.data
+        first_name = form.first_name.data
         last_name = form.last_name.data
         new_user = User.register(username,password,email,first_name,last_name)
         db.session.add(new_user)
         db.session.commit()
+        #stores the new registered user
+        session["username"] = new_user.id 
         return redirect('/secret')
     return render_template('register.html', form=form)
 
@@ -39,6 +41,7 @@ def user_login():
         password = form.password.data
         user_login = User.authenticate(username, password)
         if user_login:
+            session["username"] = user_login.id
             return redirect('/secret')
         else: 
             form.username.errors =['Invalid Username/Password']
@@ -46,4 +49,9 @@ def user_login():
 
 @app.route('/secret')
 def secret_page():
+    '''Only way to access this route is through registering or logging in a registered User'''
+    if "username" not in session:
+        #allows only the registered user in session to access.
+        flash("Unauthorized. Please register/login first.")
+        return redirect('/login')
     return render_template('secrets.html')
