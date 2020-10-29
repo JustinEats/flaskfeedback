@@ -37,7 +37,11 @@ def user_login():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        return redirect('/secret')
+        user_login = User.authenticate(username, password)
+        if user_login:
+            return redirect('/secret')
+        else: 
+            form.username.errors =['Invalid Username/Password']
     return render_template('login.html', form=form)
 
 @app.route('/secret')
