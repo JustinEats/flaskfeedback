@@ -26,5 +26,11 @@ def register():
         first_name = form.first_name.data
         last_name = form.last_name.data
         new_user = User.register(username,password,email,first_name,last_name)
+        db.session.add(new_user)
+        db.session.commit()
         return redirect('/secret')
     return render_template('register.html', form=form)
+
+@app.route('/secret')
+def secret_page():
+    return render_template('secrets.html')

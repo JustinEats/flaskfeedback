@@ -10,15 +10,15 @@ class User(db.Model):
     username = db.Column(db.String(length=20), unique=True)
     password = db.Column(db.Text, nullable=False)
     email = db.Column(db.String(length=50), unique=True, nullable=False)
-    first_name = db.Column(db.Text(length=30), nullable=False)
-    last_name = db.Column(db.Text(length=30), nullable=False)
+    first_name = db.Column(db.Text(30), nullable=False)
+    last_name = db.Column(db.Text(30), nullable=False)
 
     @classmethod
     def register(cls, username, password,email,firstname,lastname):
         '''Register a user by hashing their password'''
         hashed = bcrypt.generate_password_hash(password)
         hashed_utf8 = hashed.decode("utf8")
-        return cls(username=username, password=hashed_utf8, email=email, firstname=firstname,lastname=lastname)
+        return cls(username=username, password=hashed_utf8, email=email, first_name=firstname,last_name=lastname)
 
 def connect_db(app):
     db.app = app
