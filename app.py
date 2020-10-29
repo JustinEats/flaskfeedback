@@ -55,3 +55,8 @@ def secret_page():
         flash("Unauthorized. Please register/login first.")
         return redirect('/login')
     return render_template('secrets.html')
+
+@app.route('/logout')
+def logout_user():
+    session.pop("username")
+    return redirect('/')
