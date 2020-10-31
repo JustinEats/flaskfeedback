@@ -13,6 +13,10 @@ class User(db.Model):
     first_name = db.Column(db.Text(30), nullable=False)
     last_name = db.Column(db.Text(30), nullable=False)
 
+    def __repr__(self):
+        u = self
+        return f"<User {u.username} {u.first_name} {u.last_name}>"
+
     @classmethod
     def register(cls, username, password,email,firstname,lastname):
         '''Register a user by hashing their password'''

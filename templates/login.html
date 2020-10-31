@@ -3,6 +3,7 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
+{% if not session["username"] %}
 <div class="container-fluid">
     <h1>Login</h1>
     <form class="form-group" method="POST">
@@ -20,4 +21,12 @@
     <button class="btn btn-primary" type="submit">Submit</button>
     </form>
 </div>
+{% endif %}
+
+{% if session["username"] %}
+<div class="mt-3">
+    <h3>You are already logged in.</h3>
+    <p>Click <a href='/users/{{session["username"]}}'>here</a> to return to your account.</p>
+</div>
+{% endif %}
 {% endblock %}

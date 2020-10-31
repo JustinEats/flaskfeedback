@@ -1,0 +1,16 @@
+#user-account {
+	font-size: 15px;
+	border: 0.1rem solid #f7d35f;
+	border-radius: 25px;
+	padding: 10px;
+}
+
+#logout-user {
+	font-size: 15px;
+	padding: 5px;
+}
+
+#login-user {
+	font-size: 15px;
+	padding: 5px;
+}
