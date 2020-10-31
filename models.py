@@ -40,8 +40,12 @@ class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    username = db.Column(db.String(20, db.ForeignKey("users.username"))
+    username = db.Column(db.String(20), db.ForeignKey("users.username"))
     user = db.relationship("User", backref="feedback")
+
+    def __repr__(self):
+        f = self
+        return f"<User {f.title} {f.content} {f.username}>"
 
 def connect_db(app):
     db.app = app
