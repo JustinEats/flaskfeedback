@@ -46,7 +46,7 @@ def user_login():
             return redirect(f'/users/{user_login.username}')
         else: 
             form.username.errors =['Invalid Username/Password']
-    return render_template('login.html', form=form) #fix this
+    return render_template('login.html', form=form)
 
 @app.route('/users/<username>')
 def secret_page(username):
