@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, flash, session
-from models import db, connect_db, User
+from models import db, connect_db, User, Feedback
 from secrets import KEY
 from forms import RegisterUser, LoginUser, FeedbackForm
 
@@ -57,9 +57,10 @@ def secret_page(username):
         flash("Unauthorized. Please register/login first.")
         return redirect('/login')
     user = User.query.filter_by(username=username).first_or_404()
+    feedbacks = Feedback.query.all()
     if user.username == session["username"]:
         #if it's the authorized user it accesses their own information page. Else flash error if you manually do it.
-        return render_template('userlogin.html', user=user)
+        return render_template('userlogin.html', user=user, feedbacks=feedbacks)
     else:
         flash("Unauthorized. You are logged in on a different account.")
         #change template to show a proper/better route if this error occurs.
@@ -70,7 +71,23 @@ def logout_user():
     session.pop("username")
     return redirect('/')
 
-@app.route('/users/<username>/feedback/add')
+@app.route('/users/<username>/feedback/add', methods=["GET", "POST"])
 def my_feedback(username):
     form = FeedbackForm()
+    if "username" not in session:
+        flash("Unauthorized. Please login first.")
+        return redirect('/login')
+    if form.validate_on_submit():
+        title = form.title.data
+        feedback = form.feedback.data
+        new_feedback = Feedback(title=title,content=feedback, username=username)
+        db.session.add(new_feedback)
+        db.session.commit()
+        session["username"] = new_feedback.user.username
+        return redirect(f'/users/{new_feedback.user.username}')
+    user = User.query.filter_by(username=username).first_or_404()
+    if user.username == session["username"]:
+        return render_template('feedback.html', form=form)
+    else:
+        flash("Unauthorized. You are logged in on a different account.")
     return render_template('feedback.html', form=form)

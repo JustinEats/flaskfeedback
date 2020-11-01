@@ -14,4 +14,15 @@
         <button class="btn btn-info">Add a feedback!</button>
     </form>
 </div>
+
+<div class="container mt-3">
+    <h2>User's feedbacks</h2>
+    <ul>
+    {% for feedback in feedbacks %}
+    <li>
+    <p><b>{{feedback.username}}</b> - {{feedback.title}}: {{feedback.content}}</p>
+    </li>
+    {% endfor %}
+    </ul>
+</div>
 {% endblock %}
