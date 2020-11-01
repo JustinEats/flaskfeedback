@@ -20,8 +20,11 @@
     <ul>
     {% for feedback in feedbacks %}
     <li>
-    <p><b>{{feedback.username}}</b> - {{feedback.title}}: {{feedback.content}} <form action="/feedback/{{feedback.id}}/update"><button class="btn btn-success">Edit</button></form></p>
-    
+    <div><b>{{feedback.username}}</b> - {{feedback.title}}: {{feedback.content}}   
+        {% if session["username"] == feedback.username %}
+        <form class="d-inline" action="/feedback/{{feedback.id}}/update"><button id="edit-button" class="btn btn-success">Edit</button></form>
+        {% endif %}
+    </div>
     </li>
     {% endfor %}
     </ul>

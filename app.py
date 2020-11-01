@@ -103,7 +103,7 @@ def update_feedback(id):
     if form.validate_on_submit():
         feedback.title = form.title.data
         feedback.content = form.feedback.data
-        new_feedback = Feedback(title=feedback.title,content=feedback.content)
+        new_feedback = Feedback(title=feedback.title, content=feedback.content)
         db.session.commit()
         return redirect(f'/users/{feedback.username}')
     return render_template('update-feedback.html', form=form)
