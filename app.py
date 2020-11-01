@@ -87,7 +87,23 @@ def my_feedback(username):
         return redirect(f'/users/{new_feedback.user.username}')
     user = User.query.filter_by(username=username).first_or_404()
     if user.username == session["username"]:
+        #if anyone else other than the user tries to make a feedback, it won't let them.
         return render_template('feedback.html', form=form)
     else:
         flash("Unauthorized. You are logged in on a different account.")
     return render_template('feedback.html', form=form)
+
+@app.route('/feedback/<int:id>/update', methods=["GET", "POST"])
+def update_feedback(id):
+    form = FeedbackForm()
+    feedback = Feedback.query.get(id)
+    if "username" not in session:
+        flash("Unauthorized. Please login first.")
+        return redirect('/login')
+    if form.validate_on_submit():
+        feedback.title = form.title.data
+        feedback.content = form.feedback.data
+        new_feedback = Feedback(title=feedback.title,content=feedback.content)
+        db.session.commit()
+        return redirect(f'/users/{feedback.username}')
+    return render_template('update-feedback.html', form=form)

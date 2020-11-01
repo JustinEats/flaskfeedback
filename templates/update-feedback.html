@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Feedback{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid mt-2">
+    <h1>Edit your feedback</h1>
+    <form class="form-group" method="POST">
+    {{form.hidden_tag()}} 
+    <div>
+    {{form.title.label}}
+    {{form.title(placeholder="Title of your feedback")}}
+    </div> 
+    <div class="d-inline">
+    {{form.feedback.label}}
+    {{form.feedback(placeholder="What's on your mind?", class="input-group")}}
+    </div>
+    {% for field in form if field.widget.input_type != 'hidden' %}
+    {% for error in field.errors %}
+        {{ error }}
+    {% endfor %}
+    {% endfor %}
+    </p>
+    <button class="btn btn-primary" type="submit">Update</button>
+    </form>
+</div>
+{% endblock %}
