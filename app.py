@@ -106,4 +106,8 @@ def update_feedback(id):
         new_feedback = Feedback(title=feedback.title, content=feedback.content)
         db.session.commit()
         return redirect(f'/users/{feedback.username}')
+    if feedback.username == session["username"]:
+        return render_template('update-feedback.html', form=form)
+    else:
+        flash(f'Unauthorized. Must login the correct account.')
     return render_template('update-feedback.html', form=form)
