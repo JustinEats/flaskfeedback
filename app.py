@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, flash, session
 from models import db, connect_db, User
 from secrets import KEY
-from forms import RegisterUser, LoginUser
+from forms import RegisterUser, LoginUser, FeedbackForm
 
 app = Flask(__name__)
 
@@ -59,7 +59,7 @@ def secret_page(username):
     user = User.query.filter_by(username=username).first_or_404()
     if user.username == session["username"]:
         #if it's the authorized user it accesses their own information page. Else flash error if you manually do it.
-        return render_template('secrets.html', user=user)
+        return render_template('userlogin.html', user=user)
     else:
         flash("Unauthorized. You are logged in on a different account.")
         #change template to show a proper/better route if this error occurs.
@@ -69,3 +69,8 @@ def secret_page(username):
 def logout_user():
     session.pop("username")
     return redirect('/')
+
+@app.route('/users/<username>/feedback/add')
+def my_feedback(username):
+    form = FeedbackForm()
+    return render_template('feedback.html', form=form)
