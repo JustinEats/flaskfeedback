@@ -95,8 +95,8 @@ def my_feedback(username):
 
 @app.route('/feedback/<int:id>/update', methods=["GET", "POST"])
 def update_feedback(id):
-    form = FeedbackForm()
     feedback = Feedback.query.get(id)
+    form = FeedbackForm(obj=feedback)
     if "username" not in session:
         flash("Unauthorized. Please login first.")
         return redirect('/login')
