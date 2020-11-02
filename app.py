@@ -91,7 +91,7 @@ def my_feedback(username):
         return render_template('feedback.html', form=form)
     else:
         flash("Unauthorized. You are logged in on a different account.")
-    return render_template('feedback.html', form=form)
+    return render_template('noaccess.html')
 
 @app.route('/feedback/<int:id>/update', methods=["GET", "POST"])
 def update_feedback(id):
@@ -111,3 +111,15 @@ def update_feedback(id):
     else:
         flash(f'Unauthorized. Must login the correct account.')
     return render_template('update-feedback.html', form=form)
+
+@app.route('/feedback/<int:id>/delete', methods=["POST"])
+def delete_feedback(id):
+    feedback = Feedback.query.get(id)
+    if "username" not in session:
+        flash('Unauthorized. Please log in first.')
+        return redirect('/login')
+    #let's only the user to be able to delete the feedback
+    if feedback.username == session["username"]:
+        db.session.delete(feedback)
+        db.session.commit()
+    return redirect(f'/users/{feedback.username}')

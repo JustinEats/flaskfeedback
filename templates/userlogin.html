@@ -22,7 +22,8 @@
     <li>
     <div><b>{{feedback.username}}</b> - {{feedback.title}}: {{feedback.content}}   
         {% if session["username"] == feedback.username %}
-        <form class="d-inline" action="/feedback/{{feedback.id}}/update"><button id="edit-button" class="btn btn-success">Edit</button></form>
+        <form class="d-inline" action="/feedback/{{feedback.id}}/update"><button class="btn btn-success edit-button">Edit</button></form>
+        <form method="POST" action="/feedback/{{feedback.id}}/delete" class="d-inline"><button class="btn btn-danger edit-button">Delete</button></form>
         {% endif %}
     </div>
     </li>
